@@ -9,16 +9,26 @@ const Navbar = () => {
           return d.name.toLowerCase().includes(search.toLowerCase());
         })
       : datos;
+
+  const categories = [
+    "Accion",
+    "Anime",
+    "Aventuras",
+    "Terror",
+    "Amor",
+    "Superacion",
+  ];
   return (
     <>
       <nav className="bg-[#151515]">
         <div className="max-w-[1100px] mx-auto flex items-center justify-between py-2">
           <div className="flex items-center gap-[50px]">
-            <h3 className="text-gray-400">Anime</h3>
-            <h3 className="text-gray-400">Amor</h3>
-            <h3 className="text-gray-400">Acción</h3>
-            <h3 className="text-gray-400">Aventuras</h3>
-            <h3 className="text-gray-400">Terror</h3>
+            <h3 className="text-gray-400">Todo</h3>
+            {categories.map((cat, index) => (
+              <h3 key={index} className="text-gray-400">
+                {cat}
+              </h3>
+            ))}
           </div>
           <div>
             <label

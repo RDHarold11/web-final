@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import { AiFillPlayCircle } from "react-icons/ai";
-import { BsFillPeopleFill } from "react-icons/bs";
 import Trailer from "../components/Trailer";
 import { useEffect, useState } from "react";
 import datos from "../data";
@@ -30,23 +29,7 @@ const TrailerDetails = () => {
           </div>
           <div className="w-full px-3">
             <h2 className="text-4xl font-bold mb-5">{name} (2023)</h2>
-            <div></div>
-            <p className="my-3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae
-              aliquam molestias laboriosam cum in vitae labore sit soluta saepe
-              itaque, eligendi temporibus accusamus tempore illum quis amet,
-              eaque, molestiae eos.
-            </p>
-            <div className="flex gap-3 items-center mb-3">
-              <BsFillPeopleFill size={35} />{" "}
-              <p>Carlos Daniel, Harold Aquino, Federico, Anjeisi</p>
-            </div>
-            <div className="my-3">
-              <p>
-                <span className="text-[#f4670f] mr-1">Director:</span>
-                El mejor
-              </p>
-            </div>
+
             <div>
               <button
                 onClick={() => setSeeTrailer(true)}

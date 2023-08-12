@@ -1,4 +1,3 @@
-import React from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
 
 const Modal = ({setOpenModal}) => {
@@ -24,7 +23,7 @@ const Modal = ({setOpenModal}) => {
               </div>
               <div className="py-3">
                 <input
-                  type="text"
+                  type="password"
                   placeholder="Password"
                   className="py-2 px-3 rounded dark:text-gray-950"
                   required
