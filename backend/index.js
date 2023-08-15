@@ -1,13 +1,18 @@
 const express = require("express");
 require("dotenv").config();
 const connectDB = require("./config/db");
-const Trailer = require("./models/trailersModel");
+//const Trailer = require("./models/trailersModel"); //eliminar
+const trailerRouter = require("./routes/trailerRoute");
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+
+app.use('/api/trailers', trailerRouter)
 
 app.get("/trailers", async (req, res) => {
   try {
