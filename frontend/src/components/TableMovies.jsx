@@ -2,7 +2,7 @@ import { AiTwotoneEdit, AiFillDelete, AiFillEye } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import datos from "../data";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast, Toaster } from "sonner";
 
 const TableMovies = () => {
   const [search, setSearch] = useState("");
@@ -19,11 +19,16 @@ const TableMovies = () => {
       : trailers;
 
   const handleDelete = (id) => {
-    if (window.confirm(`¿Estas seguro de eliminar el trailer ${id}?`)) {
-      const trailer = trailers.filter((t) => t.id !== id);
-      toast("¡Eliminado!");
-      setTrailers(trailer);
-    }
+    toast(`Esta seguro de eliminar ${id}?`, {
+      action: {
+        label: "Si",
+        onClick: () => {
+          const trailer = trailers.filter((t) => t.id !== id);
+          toast.success("¡Eliminado!");
+          setTrailers(trailer);
+        },
+      },
+    });
   };
 
   useEffect(() => {
@@ -33,6 +38,7 @@ const TableMovies = () => {
   }, []);
   return (
     <>
+      <Toaster position="top-center" expand={true} richColors />
       <div className="max-w-[300px] mt-10">
         <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">

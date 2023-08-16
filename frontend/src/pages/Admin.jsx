@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import { AiOutlineArrowLeft, AiOutlineVideoCameraAdd } from "react-icons/ai";
 import TableMovies from "../components/TableMovies";
+import datos from "../data";
+
 const Admin = () => {
+  let accion = datos.filter((d) => d.genero == "Accion")
+  let aventuras = datos.filter(d => d.genero == "Aventuras")
   return (
     <section>
       <div className="px-3 py-3">
@@ -16,11 +20,11 @@ const Admin = () => {
             <h4>Anime</h4>
           </div>
           <div className="bg-[#900C3F] px-5 py-2 rounded">
-            <h2 className="text-[35px] font-bold">3</h2>
+            <h2 className="text-[35px] font-bold">{accion.length}</h2>
             <h4>Accion</h4>
           </div>
           <div className="bg-[#35155D] px-5 py-2 rounded">
-            <h2 className="text-[35px] font-bold">3</h2>
+            <h2 className="text-[35px] font-bold">{aventuras.length}</h2>
             <h4>Aventura</h4>
           </div>
           <div className="bg-[#9F91CC] px-5 py-2 rounded">
