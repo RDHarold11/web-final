@@ -1,43 +1,65 @@
-const asyncHandler = require("express-async-handler");
-const Trailer = require("../models/trailer");
+const Trailer = require("../models/trailersModel");
 
-const createTrailer = asyncHandler(async (req, res) => {
-  const {
-    Título,
-    Año,
-    Director,
-    Actores,
-    Genero,
-    Reseña,
-    Imagen_de_Portada,
-    link_del_trailer,
-  } = req.body;
+const trailersController = {
+  getAllTrailers: async (req, res) => {
+    try {
+      const trailers = await Trailer.find({});
+      res.status(200).json({ trailers });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+  
+  getTrailerById: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const trailer = await Trailer.findById(id);
+      res.status(200).json(trailer);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
 
-  if (
-    !Título ||
-    !Año ||
-    !Actores ||
-    !Genero ||
-    !Reseña ||
-    !Imagen_de_Portada ||
-    !Link_del_trailer
-  ) {
-    return res.status(400).json({ message: "Complete todos los campos" });
-  }
+  createTrailer: async (req, res) => {
+    try {
+      const trailer = await Trailer.create(req.body);
+      res.status(201).json({ trailer });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: error.message });
+    }
+  },
 
-  const trailer = await Trailer.create({
-    Título,
-    Año,
-    Director,
-    Actores,
-    Genero,
-    Reseña,
-    Imagen_de_Portada,
-    link_del_trailer,
-  });
-  res.status(200).json(trailer);
-});
+  updateTrailer: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const trailer = await Trailer.findByIdAndUpdate(id, req.body);
+      if (!trailer) {
+        return res
+          .status(404)
+          .json({ message: `No se encontró ningún trailer con ID ${id}` });
+      }
+      const trailerUpdate = await Trailer.findById(id);
+      res.status(200).json(trailerUpdate);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
 
-const getAllTrailers = asyncHandler(async (req, res) => {
-  res.status(200).json(posts);
-});
+  deleteTrailer: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const trailer = await Trailer.findByIdAndRemove(id);
+      if (!trailer) {
+        return res
+          .status(404)
+          .json({ message: `No se encontró ningún trailer con ID ${id}` });
+      }
+      res.status(200).json(trailer);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+};
+
+module.exports = trailersController;
