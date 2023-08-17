@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const MongoDBServer = "mongodb://127.0.0.1:27017/local";
+const MongoDBServer = "mongodb+srv://admin:admin@web.wuwa480.mongodb.net/WebProjectretryWrites=true&w=majority";
 async function connectDB() {
   try {
     await mongoose.connect(MongoDBServer, {
