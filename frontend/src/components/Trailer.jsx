@@ -1,15 +1,15 @@
-const Trailer = ({ setSeeTrailer }) => {
+const Trailer = ({ setSeeTrailer, trailer }) => {
   return (
     <div className="fixed w-[100%] h-[100%] pb-3 flex items-center flex-col justify-center mx-auto top-0 left-0 right-0 bottom-0">
       <div className="w-full h-screen">
         <iframe
           width="100%"
           height="100%"
-          src="https://www.youtube.com/embed/GLLZuHXlY3Y"
+          src={`${trailer}`}
           title="YouTube video player"
-          frameborder="0"
+          frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
+          allowFullScreen
         ></iframe>
       </div>
       <button

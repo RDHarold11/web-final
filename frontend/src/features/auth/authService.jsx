@@ -5,7 +5,6 @@ const URL = "http://localhost:5500/api/users/login";
 const login = async (userData) => {
   try {
     const response = await axios.post(URL, userData);
-    console.log(response)
     if (response.data) {
       console.log(userData);
       localStorage.setItem("user", JSON.stringify(response.data));

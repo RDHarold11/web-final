@@ -2,19 +2,22 @@ import { useParams } from "react-router-dom";
 import { AiFillPlayCircle } from "react-icons/ai";
 import Trailer from "../components/Trailer";
 import { useEffect, useState } from "react";
-import datos from "../data";
 import { Link } from "react-router-dom";
+import trailerService from "../features/trailers/trailerService"
 
 const TrailerDetails = () => {
   const [seeTrailer, setSeeTrailer] = useState(false);
   const [trailer, setTrailer] = useState({});
   const { id } = useParams();
 
-  const { name, img } = trailer;
+  const { Titulo, Actores, Reseña, Director, Genero, ImagenDePortada, linkDelTrailer } = trailer;
 
   useEffect(() => {
-    const singleArticle = datos.find((d) => d.id == id);
-    setTrailer(singleArticle);
+    const fetchData = async () => {
+      const response = await trailerService.getTrailerById(id)
+      setTrailer(response);
+    }
+    fetchData()
   }, [id]);
 
   return (
@@ -25,10 +28,10 @@ const TrailerDetails = () => {
       <section className=" max-w-[1500px] mx-auto flex items-center justify-center w-full h-screen">
         <div className="flex items-start justify-center max-w-[900px] gap-3">
           <div>
-            <img src={img} alt="" className="w-[100%] h-[500px]" />
+            <img src={ImagenDePortada} alt="" className="w-[100%] h-[500px]" />
           </div>
           <div className="w-full px-3">
-            <h2 className="text-4xl font-bold mb-5">{name} (2023)</h2>
+            <h2 className="text-4xl font-bold mb-5">{Titulo} (2023)</h2>
 
             <div>
               <button
@@ -40,7 +43,7 @@ const TrailerDetails = () => {
             </div>
           </div>
         </div>
-        {seeTrailer && <Trailer setSeeTrailer={setSeeTrailer} />}
+        {seeTrailer && <Trailer setSeeTrailer={setSeeTrailer} trailer={linkDelTrailer}/>}
       </section>
     </>
   );

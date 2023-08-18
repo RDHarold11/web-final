@@ -17,7 +17,7 @@ const Movies = ({ datos }) => {
       <div className="flex flex-wrap gap-5">
         {datos.length > 0 ? (
           datos?.map((d) => {
-            return <Movie key={d.id} {...d} />;
+            return <Movie key={d._id} {...d} />;
           })
         ) : (
           <h2>Sin coincidencias :(</h2>
