@@ -3,18 +3,18 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, Toaster } from "sonner";
 import trailerService from "../features/trailers/trailerService";
-import {useDispatch, useSelector} from "react-redux"
+import { useDispatch, useSelector } from "react-redux";
 import { deleteTrailer } from "../features/trailers/trailerSlice";
-
+import { AiOutlineVideoCameraAdd } from "react-icons/ai";
 
 const TableMovies = () => {
   const [search, setSearch] = useState("");
   const [trailers, setTrailers] = useState([]);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch()
-  const {user} = useSelector((state) => state.auth)
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
 
   const filterTrailers =
     search != null && search.length > 0
@@ -28,8 +28,8 @@ const TableMovies = () => {
       action: {
         label: "Si",
         onClick: () => {
-          dispatch(deleteTrailer(id))
-          navigate(0)
+          dispatch(deleteTrailer(id));
+          navigate(0);
           toast.success("¡Eliminado!");
         },
       },
@@ -38,25 +38,29 @@ const TableMovies = () => {
 
   useEffect(() => {
     const fetchTrailers = async () => {
-      const response = await trailerService.getTrailers()
-      setTrailers(response.trailers)
-      setLoading(false)
-    }
+      const response = await trailerService.getTrailers();
+      setTrailers(response.trailers);
+      setLoading(false);
+    };
     if (!user) {
       navigate("/");
     }
-    fetchTrailers()
+    fetchTrailers();
   }, []);
 
-  if(loading){
-    return <div className="flex items-center justify-center fixed top-0 h-screen w-full left-0 bottom-0 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-    <div className="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">loading...</div>
-</div>
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center fixed top-0 h-screen w-full left-0 bottom-0 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+        <div className="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">
+          loading...
+        </div>
+      </div>
+    );
   }
   return (
     <>
       <Toaster position="top-center" expand={true} richColors />
-      <div className="max-w-[300px] mt-10">
+      <div className="px-2 w-full mt-10 flex items-center justify-between">
         <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <svg
@@ -85,8 +89,16 @@ const TableMovies = () => {
             required
           />
         </div>
+        {/* Agregar un trailer */}
+        <div>
+          <Link to="/agregar">
+            <button className="flex items-center gap-2 py-2 mt-5 px-3 rounded-full bg-[#614BC3]">
+              Agregar un trailer <AiOutlineVideoCameraAdd size={25} />
+            </button>
+          </Link>
+        </div>
       </div>
-      <div className="relative overflow-x-auto pt-10">
+      <div className="relative overflow-x-auto pt-10 px-3">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>

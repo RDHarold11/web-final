@@ -4,20 +4,26 @@ import axios from "axios";
 const Navbar = () => {
   const [search, setSearch] = useState("");
   const [trailers, setTrailers] = useState([])
-  const filterData =
+  const [category, setCategory] = useState("")
+
+  let filterData =
     search !== null && search.length > 0
       ? trailers.filter((d) => {
           return d.Titulo.toLowerCase().includes(search.toLowerCase());
         })
       : trailers;
 
+  filterData = category !== "Todo" ? filterData.filter((d) => {
+    return d.Genero.toLowerCase().includes(category.toLowerCase()) 
+  }) : filterData
+
   const categories = [
-    "Accion",
+    "Acción",
     "Anime",
-    "Aventuras",
+    "Aventura",
     "Terror",
     "Amor",
-    "Superacion",
+    "Superación",
   ];
 
   useEffect(() => {
@@ -32,9 +38,9 @@ const Navbar = () => {
       <nav className="bg-[#151515]">
         <div className="max-w-[1100px] mx-auto flex items-center justify-between py-2">
           <div className="flex items-center gap-[50px]">
-            <h3 className="text-gray-400">Todo</h3>
+            <h3 className="text-gray-400 cursor-pointer" onClick={() => setCategory("Todo")}>Todo</h3>
             {categories.map((cat, index) => (
-              <h3 key={index} className="text-gray-400">
+              <h3 key={index} onClick={() => setCategory(cat)} className="text-gray-400 cursor-pointer">
                 {cat}
               </h3>
             ))}

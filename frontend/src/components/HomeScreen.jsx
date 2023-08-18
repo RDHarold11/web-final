@@ -18,9 +18,7 @@ const HomeScreen = () => {
             </span>
           </div>
           <div>
-            <button className="bg-[#f4670f] px-5 mt-3 py-2 rounded-full text-[13px]">
-              Ver Trailer
-            </button>
+          
           </div>
         </div>
       </div>

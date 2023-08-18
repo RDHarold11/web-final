@@ -18,7 +18,7 @@ const Sidebar = () => {
           <img width="100px" className="py-5" src="/logo.png" alt="logo" />
         </div>
         <div className="py-5 flex flex-col center justify-start uppercase">
-          <Link className="hover:text-[#f4670f] flex justify-between items-center my-4">
+          <Link className="hover:text-[#f4670f] flex justify-between items-center my-4" to="-">
             Home <AiOutlineArrowRight />
           </Link>
           <Link className="hover:text-[#f4670f] flex justify-between items-center my-4">
