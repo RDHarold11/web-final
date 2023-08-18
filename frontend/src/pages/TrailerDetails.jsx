@@ -41,6 +41,26 @@ const TrailerDetails = () => {
                 Ver trailer <AiFillPlayCircle size={25} />
               </button>
             </div>
+
+            <div class="flex justify-between p-8">
+              <div class="w-1/2 rounded-lg shadow-md p-4">
+                <h2 class="text-lg font-semibold mb-4">Detalles</h2>
+                <p><strong>Director:</strong> {Director}</p>
+                <p><strong>Genero:</strong> {Genero}</p>
+              </div>
+              <div class="w-1/2 rounded-lg shadow-md p-4">
+                <h2 class="text-lg font-semibold mb-4">Cast</h2>
+                <ul>
+                  <li>{Actores}</li>
+                </ul>
+              </div>
+            </div>
+            <hr />
+            <div class="p-8 rounded-lg shadow-md mt-4">
+              <h2 class="text-lg font-semibold mb-4">Storyline</h2>
+              <p>{Reseña}</p>
+            </div>
+
           </div>
         </div>
         {seeTrailer && <Trailer setSeeTrailer={setSeeTrailer} trailer={linkDelTrailer}/>}
