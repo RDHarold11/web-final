@@ -1,20 +1,25 @@
 import { AiTwotoneEdit, AiFillDelete, AiFillEye } from "react-icons/ai";
 import { useEffect, useState } from "react";
-import datos from "../data";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, Toaster } from "sonner";
+import trailerService from "../features/trailers/trailerService";
+import {useDispatch, useSelector} from "react-redux"
+import { deleteTrailer } from "../features/trailers/trailerSlice";
+
 
 const TableMovies = () => {
   const [search, setSearch] = useState("");
-  const [trailers, setTrailers] = useState(datos);
+  const [trailers, setTrailers] = useState([]);
+  const [loading, setLoading] = useState(true)
 
   const navigate = useNavigate();
-  const user = true;
+  const dispatch = useDispatch()
+  const {user} = useSelector((state) => state.auth)
 
   const filterTrailers =
-    search !== null
+    search != null && search.length > 0
       ? trailers?.filter((t) => {
-          return t?.name?.toLowerCase().includes(search.toLowerCase());
+          return t?.Titulo?.toLowerCase().includes(search.toLowerCase());
         })
       : trailers;
 
@@ -23,19 +28,31 @@ const TableMovies = () => {
       action: {
         label: "Si",
         onClick: () => {
-          const trailer = trailers.filter((t) => t.id !== id);
+          dispatch(deleteTrailer(id))
+          navigate(0)
           toast.success("¡Eliminado!");
-          setTrailers(trailer);
         },
       },
     });
   };
 
   useEffect(() => {
+    const fetchTrailers = async () => {
+      const response = await trailerService.getTrailers()
+      setTrailers(response.trailers)
+      setLoading(false)
+    }
     if (!user) {
       navigate("/");
     }
+    fetchTrailers()
   }, []);
+
+  if(loading){
+    return <div className="flex items-center justify-center fixed top-0 h-screen w-full left-0 bottom-0 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+    <div className="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">loading...</div>
+</div>
+  }
   return (
     <>
       <Toaster position="top-center" expand={true} richColors />
@@ -92,35 +109,35 @@ const TableMovies = () => {
           </thead>
           <tbody>
             {filterTrailers?.map((item) => {
-              const { id, name, genero, director, year } = item;
+              const { _id, Titulo, Genero, Director, año } = item;
 
               return (
                 <tr
-                  key={id}
+                  key={_id}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 >
                   <th
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    {name}
+                    {Titulo}
                   </th>
-                  <td>{genero}</td>
-                  <td>{director}</td>
-                  <td>{year}</td>
+                  <td>{Genero}</td>
+                  <td>{Director}</td>
+                  <td>{año}</td>
                   <td>
-                    <Link to={`/agregar/${id}`}>
+                    <Link to={`/agregar/${_id}`}>
                       <button className="bg-[#F31559] px-2 py-2 rounded mr-2">
                         <AiTwotoneEdit size={25} color="white" />
                       </button>
                     </Link>
                     <button
                       className="bg-[#1D5B79] px-2 py-2 mr-2"
-                      onClick={() => handleDelete(id)}
+                      onClick={() => handleDelete(_id)}
                     >
                       <AiFillDelete size={25} color="white" />
                     </button>
-                    <Link to={`/trailer/${id}`}>
+                    <Link to={`/trailer/${_id}`}>
                       <button className="px-2 py-2 bg-[#974EC3]">
                         <AiFillEye size={25} color="white" />
                       </button>

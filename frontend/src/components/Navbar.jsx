@@ -1,14 +1,16 @@
 import Movies from "./Movies";
 import datos from "../data";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 const Navbar = () => {
   const [search, setSearch] = useState("");
+  const [trailers, setTrailers] = useState([])
   const filterData =
-    search !== null
-      ? datos.filter((d) => {
-          return d.name.toLowerCase().includes(search.toLowerCase());
+    search !== null && search.length > 0
+      ? trailers.filter((d) => {
+          return d.Titulo.toLowerCase().includes(search.toLowerCase());
         })
-      : datos;
+      : trailers;
 
   const categories = [
     "Accion",
@@ -18,6 +20,14 @@ const Navbar = () => {
     "Amor",
     "Superacion",
   ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get("http://localhost:5500/trailers/")
+      setTrailers(response.data.trailers)
+    }
+    fetchData()
+  },[])
   return (
     <>
       <nav className="bg-[#151515]">

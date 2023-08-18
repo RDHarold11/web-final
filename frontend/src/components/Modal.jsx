@@ -1,18 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Toaster, toast } from "sonner";
+import { useSelector, useDispatch } from "react-redux";
+import { login, reset } from "../features/auth/authSlice";
 
 const Modal = ({ setOpenModal }) => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const { user, isError, message } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      toast.error("Hay campos vacios");
-    }
-    setOpenModal(false);
+    const userData = { username, password };
+    dispatch(login(userData));
   };
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (user) {
+      setOpenModal(false);
+      toast.success(`Bienvenido ${user.username}`);
+    }
+    dispatch(reset());
+  }, [user, dispatch, isError]);
 
   return (
     <>
@@ -30,9 +44,9 @@ const Modal = ({ setOpenModal }) => {
               <div className="py-3">
                 <input
                   type="text"
-                  onChange={(e) => setEmail(e.target.value)}
-                  value={email}
-                  placeholder="Email"
+                  onChange={(e) => setUsername(e.target.value)}
+                  value={username}
+                  placeholder="username"
                   className="py-2 px-3 rounded dark:text-gray-950"
                   required
                 />

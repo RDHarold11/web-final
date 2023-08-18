@@ -1,11 +1,28 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineArrowLeft, AiOutlineVideoCameraAdd } from "react-icons/ai";
 import TableMovies from "../components/TableMovies";
 import datos from "../data";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Admin = () => {
-  let accion = datos.filter((d) => d.genero == "Accion")
-  let aventuras = datos.filter(d => d.genero == "Aventuras")
+  const [trailers, setTrailers] = useState([])
+  let accion = datos.filter((d) => d.genero == "Accion");
+  let aventuras = datos.filter((d) => d.genero == "Aventuras");
+  const { user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get("http://localhost:5500/trailers/")
+      setTrailers(response.data.trailers)
+    }
+    if (!user) {
+      navigate("/");
+    }
+    fetchData()
+  }, []);
   return (
     <section>
       <div className="px-3 py-3">

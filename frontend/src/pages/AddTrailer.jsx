@@ -1,8 +1,13 @@
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import datos from "../data";
 import { useState } from "react";
 import { Toaster, toast } from "sonner";
+import { useSelector, useDispatch } from "react-redux";
+import trailerService from "../features/trailers/trailerService";
+import {
+  createTrailer,
+  updateTrailer,
+} from "../features/trailers/trailerSlice";
 
 const AddTrailer = () => {
   const { id } = useParams();
@@ -18,29 +23,71 @@ const AddTrailer = () => {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const onChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
-  const user = true;
+  const { user } = useSelector((state) => state.auth);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formData) {
-      toast.success("¡Trailer creado!");
+    const {
+      titulo: Titulo,
+      director: Director,
+      actores: Actores,
+      year: año,
+      genero: Genero,
+      portada: ImagenDePortada,
+      rese: Reseña,
+      trailer: linkDelTrailer,
+    } = formData;
+    const newTrailer = {
+      Titulo,
+      año,
+      Director,
+      Actores,
+      Genero,
+      Reseña,
+      ImagenDePortada,
+      linkDelTrailer,
+    };
+    if (id) {
+      dispatch(updateTrailer({ id, newTrailer }));
+      toast.success("Editado satisfactoriamente");
+    } else {
+      dispatch(createTrailer(newTrailer));
+      toast.success("Agregaste un nuevo trailer");
     }
   };
-
   useEffect(() => {
     if (!user) {
       navigate("/");
     }
     if (id) {
-      const trailer = datos.find((d) => d.id == id);
-      const { director, genero, img, name, year } = trailer;
-      if (trailer) {
-        setFormData({ titulo: name, director, genero, year, portada: img });
-      }
+      const fetchTrailers = async () => {
+        const response = await trailerService.getTrailerById(id);
+        const {
+          Titulo,
+          Actores,
+          Genero,
+          ImagenDePortada,
+          Reseña,
+          linkDelTrailer,
+          Director,
+          año,
+        } = response;
+        setFormData({
+          titulo: Titulo,
+          director: Director,
+          actores: Actores,
+          year: año,
+          genero: Genero,
+          portada: ImagenDePortada,
+          rese: Reseña,
+          trailer: linkDelTrailer,
+        });
+      };
+      fetchTrailers();
     }
   }, [id]);
   return (
@@ -90,6 +137,7 @@ const AddTrailer = () => {
                 <input
                   type="text"
                   name="actores"
+                  value={formData.actores}
                   onChange={(e) => onChange(e)}
                   id="floating_repeat_password"
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -166,6 +214,7 @@ const AddTrailer = () => {
                   <input
                     type="text"
                     name="trailer"
+                    value={formData.trailer}
                     onChange={(e) => onChange(e)}
                     id="floating_company"
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -184,6 +233,7 @@ const AddTrailer = () => {
                 <textarea
                   type="text"
                   name="rese"
+                  value={formData.rese}
                   onChange={(e) => onChange(e)}
                   id="floating_email"
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -214,7 +264,7 @@ const AddTrailer = () => {
         <img
           src={
             id
-              ? formData.portada
+              ? formData?.portada
               : "https://wallpapers.com/images/featured/peaky-blinders-mf0te5aaoy07nn99.jpg"
           }
           className="w-full h-screen col-span-2"
