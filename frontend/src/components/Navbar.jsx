@@ -1,5 +1,4 @@
 import Movies from "./Movies";
-import datos from "../data";
 import { useEffect, useState } from "react";
 import axios from "axios";
 const Navbar = () => {

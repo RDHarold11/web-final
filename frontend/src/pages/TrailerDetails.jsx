@@ -10,7 +10,7 @@ const TrailerDetails = () => {
   const [trailer, setTrailer] = useState({});
   const { id } = useParams();
 
-  const { Titulo, Actores, Reseña, Director, Genero, ImagenDePortada, linkDelTrailer } = trailer;
+  const { Titulo, Actores, Reseña, Director, Genero, ImagenDePortada, linkDelTrailer, año } = trailer;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +31,7 @@ const TrailerDetails = () => {
             <img src={ImagenDePortada} alt="" className="w-[100%] h-[500px]" />
           </div>
           <div className="w-full px-3">
-            <h2 className="text-4xl font-bold mb-5">{Titulo} (2023)</h2>
+            <h2 className="text-4xl font-bold mb-5">{Titulo} ({año})</h2>
 
             <div>
               <button
